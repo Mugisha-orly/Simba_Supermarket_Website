@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "search": "Shaka ibicuruzwa, amamerere, ibyiciro...",
+    "signin": "Injira",
+    "hi": "Muraho, {{name}}",
+    "departments": "Ibyiciro byose",
+    "wishlist": "Ibyo nifuza",
+    "cart": "Ikarita"
+  },
+  "hero": {
+    "badge": "Supermarket ya mbere mu Rwanda",
+    "title_part1": "Ubwiza",
+    "title_part2": "Busumba",
+    "title_accent": "Ibyo uzi",
+    "desc": "Kuva mu mutima wa Kigali kugeza ku meza yawe. Ibicuruzwa byiza cyane biva hirya no hino ku isi n'ibyakorewe mu Rwanda — bikugezweho mu rugo.",
+    "cta": "Tangira guhaha"
+  },
+  "auth": {
+    "title": "Injira kugira ngo utumize",
+    "secure": "Kwishura neza",
+    "google": "Injira ukoresheje Google",
+    "or": "CYANGWA",
+    "email": "Imeli yawe",
+    "password": "Ijambo ry'ibanga",
+    "forgot": "Wibagiwe ijambo ry'ibanga?",
+    "create": "Fungura konti",
+    "login": "Injira"
+  },
+  "categories": {
+    "label": "Gura ukurikije icyiciro",
+    "title_part1": "Shakisha ",
+    "title_accent": "Ibyiciro",
+    "view_all": "Reba byose"
+  },
+  "products": {
+    "label": "Urutonde rwacu",
+    "title_part1": "Guhitamo ",
+    "title_accent": "Neza",
+    "showing": "Kwerekana {{displayed}} kuri {{total}}",
+    "sort_by": "Sarura:",
+    "sort_featured": "Ibyatoranyijwe",
+    "sort_price_low": "Igiciro: Gito kugeza Kinini",
+    "sort_price_high": "Igiciro: Kinini kugeza Gito",
+    "no_products": "Nta bicuruzwa byabonetse",
+    "no_products_desc": "Gerageza guhindura ishakisha ryawe cyangwa urebe ikindi cyiciro.",
+    "load_more": "Izana ibindi bicuruzwa",
+    "load_meta": "Kwerekana {{displayed}} kuri {{total}}",
+    "out_of_stock": "Ntibigihari",
+    "premium": "Byiza cyane",
+    "best_seller": "Bikunzwe cyane",
+    "new": "Gishya",
+    "in_stock": "Birahari"
+  },
+  "cart": {
+    "title": "Ikarita Yanjye",
+    "signed_in_as": "Winjiye nka {{name}}",
+    "empty": "Ikarita yawe irimo ubusa",
+    "empty_desc": "Ongeramo ibicuruzwa kugira ngo utangire gutumiza.",
+    "browse": "Reba Ibicuruzwa",
+    "subtotal": "Igiteranyo gito",
+    "items_count": "(Igicuruzwa {{count}})",
+    "items_count_plural": "(Ibicuruzwa {{count}})",
+    "delivery": "Gutwara (Kigali)",
+    "total": "Igiteranyo Cose",
+    "checkout": "Emeza Komande",
+    "signin_checkout": "Injira Kandi Wemeze",
+    "clear": "Siba Ikarita",
+    "signin_prompt_1": "Injira",
+    "signin_prompt_2": " kugira ngo utumize kandi ubike amakuru yawe."
+  },
+  "wishlist": {
+    "title": "Ibyo Nifuza",
+    "empty": "Nta kintu kirimo",
+    "empty_desc": "Bika ibyo ukunda ukanze ku gashushanyo k'umutima ku gicuruzwa icyo ari cyo cyose.",
+    "explore": "Reba Ibicuruzwa",
+    "add_cart": "Ohyera mu ikarita",
+    "add_all": "Ohyera byose mu ikarita"
+  },
+  "footer": {
+    "stay_updated": "Guma Umenyeshwa",
+    "title_part1": "Injira muri Simba ",
+    "title_accent": "Elite",
+    "desc": "Amasezerano yihariye, ibicuruzwa bishya - bizanwa muri imeli yawe.",
+    "placeholder": "Imeli yawe",
+    "subscribe": "Iyandikishe",
+    "brand_sub": "Supermarket y'Ikirenga",
+    "brand_desc": "Guhindura uko guhaha bikorwa mu Rwanda. Ubwiza muri buri gicuruzwa — kuva 1970.",
+    "explore": "Shakisha",
+    "services": "Serivisi",
+    "find_us": "Tudushake",
+    "address_label": "Aderesi",
+    "hotline_label": "Telefone",
+    "rights": "© 2024 Simba Supermarket Rwanda. Uburenganzira bwose burabitswe.",
+    "privacy": "Amabwiriza y'ibanga",
+    "terms": "Amabwiriza y'imikoreshereze",
+    "explore_links": {
+      "new_arrivals": "Ibishya Byagezeho",
+      "featured_brands": "Ikirango Cyatoranyijwe",
+      "fresh_produce": "Umusaruro Mushya",
+      "daily_deals": "Poromosiyo z'Umunsi",
+      "simba_rewards": "Ibihembo bya Simba"
+    },
+    "service_links": {
+      "store_locator": "Aho Duka Iherereye",
+      "track_order": "Kurikirana Komande",
+      "gift_vouchers": "Amakarita y'Impano",
+      "business_accounts": "Konti z'Ubucuruzi",
+      "customer_support": "Ubufasha bw'Abakiriya"
+    }
+  },
+  "app": {
+    "back_to_top": "Subira hejuru"
+  }
+}

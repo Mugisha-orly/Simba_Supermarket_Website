@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "search": "Tafuta bidhaa, chapa, kategoria...",
+    "signin": "Ingia",
+    "hi": "Habari, {{name}}",
+    "departments": "Idara Zote",
+    "wishlist": "Orodha ya matamanio",
+    "cart": "Kikapu"
+  },
+  "hero": {
+    "badge": "Duka namba 1 la Premium nchini Rwanda",
+    "title_part1": "Ubora",
+    "title_part2": "Zaidi ya",
+    "title_accent": "Kipimo",
+    "desc": "Kutoka moyoni mwa Kigali hadi meza yako. Pata mkusanyiko wa chapa za kiwango cha juu duniani na mazao mapya ya ndani — yaletwa hadi mlangoni pako.",
+    "cta": "Anza Kununua"
+  },
+  "auth": {
+    "title": "Ingia ili kuagiza",
+    "secure": "Malipo Salama",
+    "google": "Ingia na Google",
+    "or": "AU",
+    "email": "Anwani ya barua pepe",
+    "password": "Nywila",
+    "forgot": "Umesahau nywila?",
+    "create": "Fungua Akaunti",
+    "login": "Ingia"
+  },
+  "categories": {
+    "label": "Nunua kwa Idara",
+    "title_part1": "Vinjari ",
+    "title_accent": "Kategoria",
+    "view_all": "Ona Zote"
+  },
+  "products": {
+    "label": "Katalogi Yetu",
+    "title_part1": "Uchaguzi ",
+    "title_accent": "Maalum",
+    "showing": "Inaonyesha {{displayed}} kati ya {{total}}",
+    "sort_by": "Panga kwa:",
+    "sort_featured": "Iliyoangaziwa",
+    "sort_price_low": "Bei: Chini hadi Juu",
+    "sort_price_high": "Bei: Juu hadi Chini",
+    "no_products": "Hakuna bidhaa zilizopatikana",
+    "no_products_desc": "Jaribu kurekebisha utafutaji wako au kuvinjari kategoria nyingine.",
+    "load_more": "Pakia Bidhaa Zaidi",
+    "load_meta": "Inaonyesha {{displayed}} kati ya {{total}}",
+    "out_of_stock": "Imeisha",
+    "premium": "Premium",
+    "best_seller": "Inauzwa Sana",
+    "new": "Mpya",
+    "in_stock": "Ipo"
+  },
+  "cart": {
+    "title": "Kikapu Changu",
+    "signed_in_as": "Umeingia kama {{name}}",
+    "empty": "Kikapu chako ni kitupu",
+    "empty_desc": "Ongeza bidhaa kutoka kwenye katalogi yetu ili kuanza agizo lako.",
+    "browse": "Vinjari Bidhaa",
+    "subtotal": "Jumla Ndogo",
+    "items_count": "(Bidhaa {{count}})",
+    "items_count_plural": "(Bidhaa {{count}})",
+    "delivery": "Uwasilishaji (Kigali)",
+    "total": "Jumla",
+    "checkout": "Weka Agizo",
+    "signin_checkout": "Ingia na Uweke Agizo",
+    "clear": "Futa Kikapu",
+    "signin_prompt_1": "Ingia",
+    "signin_prompt_2": " ili kuweka agizo lako na kuhifadhi taarifa zako."
+  },
+  "wishlist": {
+    "title": "Orodha ya Matamanio",
+    "empty": "Orodha yako ni tupu",
+    "empty_desc": "Hifadhi bidhaa unazopenda kwa kubofya ikoni ya moyo.",
+    "explore": "Chunguza Bidhaa",
+    "add_cart": "Weka kwenye Kikapu",
+    "add_all": "Weka Zote kwenye Kikapu"
+  },
+  "footer": {
+    "stay_updated": "Kaa na Taarifa",
+    "title_part1": "Jiunge na Simba ",
+    "title_accent": "Elite",
+    "desc": "Matoleo maalum, bidhaa mpya — moja kwa moja kwenye barua pepe yako.",
+    "placeholder": "Barua pepe yako",
+    "subscribe": "Jisajili",
+    "brand_sub": "Duka la Elite",
+    "brand_desc": "Kuboresha uzoefu wa ununuzi nchini Rwanda. Ubora katika kila bidhaa — tangu 1970.",
+    "explore": "Chunguza",
+    "services": "Huduma",
+    "find_us": "Tupate",
+    "address_label": "Anwani",
+    "hotline_label": "Namba ya Simu",
+    "rights": "© 2024 Simba Supermarket Rwanda. Haki zote zimehifadhiwa.",
+    "privacy": "Sera ya Faragha",
+    "terms": "Masharti ya Huduma",
+    "explore_links": {
+      "new_arrivals": "Bidhaa Mpya",
+      "featured_brands": "Chapa Mashuhuri",
+      "fresh_produce": "Bidhaa Safi",
+      "daily_deals": "OFA za Kila Siku",
+      "simba_rewards": "Zawadi za Simba"
+    },
+    "service_links": {
+      "store_locator": "Tafuta Duka",
+      "track_order": "Fuatilia Agizo",
+      "gift_vouchers": "Vocha za Zawadi",
+      "business_accounts": "Akaunti za Biashara",
+      "customer_support": "Msaada kwa Wateja"
+    }
+  },
+  "app": {
+    "back_to_top": "Rudi juu"
+  }
+}

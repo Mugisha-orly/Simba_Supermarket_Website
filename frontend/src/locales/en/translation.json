@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "search": "Search products, brands, categories...",
+    "signin": "Sign In",
+    "hi": "Hi, {{name}}",
+    "departments": "All Categories",
+    "wishlist": "Wishlist",
+    "cart": "Cart"
+  },
+  "hero": {
+    "badge": "Rwanda's #1 Premium Supermarket",
+    "title_part1": "Quality",
+    "title_part2": "Beyond",
+    "title_accent": "Measure",
+    "desc": "From the heart of Kigali to your table. Experience a curated collection of world-class brands and the freshest local produce — delivered to your door.",
+    "cta": "Start Shopping"
+  },
+  "auth": {
+    "title": "Sign in to place your order",
+    "secure": "Secure Checkout",
+    "google": "Sign in with Google",
+    "or": "OR",
+    "email": "Email address",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "create": "Create Account",
+    "login": "Sign In"
+  },
+  "categories": {
+    "label": "Shop by Department",
+    "title_part1": "Browse ",
+    "title_accent": "Categories",
+    "view_all": "View All"
+  },
+  "products": {
+    "label": "Our Catalogue",
+    "title_part1": "Curated ",
+    "title_accent": "Selection",
+    "showing": "Showing {{displayed}} of {{total}} products",
+    "sort_by": "Sort by:",
+    "sort_featured": "Featured",
+    "sort_price_low": "Price: Low to High",
+    "sort_price_high": "Price: High to Low",
+    "no_products": "No products found",
+    "no_products_desc": "Try adjusting your search or browsing a different category.",
+    "load_more": "Load More Products",
+    "load_meta": "Showing {{displayed}} of {{total}} items",
+    "out_of_stock": "Out of Stock",
+    "premium": "Premium",
+    "best_seller": "Best Seller",
+    "new": "New",
+    "in_stock": "In Stock"
+  },
+  "cart": {
+    "title": "My Cart",
+    "signed_in_as": "Signed in as {{name}}",
+    "empty": "Your cart is empty",
+    "empty_desc": "Add items from our catalogue to get started with your order.",
+    "browse": "Browse Products",
+    "subtotal": "Subtotal",
+    "items_count": "({{count}} item)",
+    "items_count_plural": "({{count}} items)",
+    "delivery": "Delivery (Kigali)",
+    "total": "Total",
+    "checkout": "Place Order",
+    "signin_checkout": "Sign In & Place Order",
+    "clear": "Clear Cart",
+    "signin_prompt_1": "Sign in",
+    "signin_prompt_2": " to place your order and save your information."
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty",
+    "empty_desc": "Save items you love by clicking the heart icon on any product.",
+    "explore": "Explore Products",
+    "add_cart": "Add to Cart",
+    "add_all": "Add All to Cart"
+  },
+  "footer": {
+    "stay_updated": "Stay Updated",
+    "title_part1": "Join the Simba ",
+    "title_accent": "Elite",
+    "desc": "Exclusive deals, new arrivals, and premium offers — straight to your inbox.",
+    "placeholder": "Your email address",
+    "subscribe": "Subscribe",
+    "brand_sub": "Elite Supermarket",
+    "brand_desc": "Redefining the shopping experience in Rwanda. Excellence in every aisle, quality in every product — since 1970.",
+    "explore": "Explore",
+    "services": "Services",
+    "find_us": "Find Us",
+    "address_label": "Address",
+    "hotline_label": "Hotline",
+    "rights": "© 2024 Simba Supermarket Rwanda. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "explore_links": {
+      "new_arrivals": "New Arrivals",
+      "featured_brands": "Featured Brands",
+      "fresh_produce": "Fresh Produce",
+      "daily_deals": "Daily Deals",
+      "simba_rewards": "Simba Rewards"
+    },
+    "service_links": {
+      "store_locator": "Store Locator",
+      "track_order": "Track Order",
+      "gift_vouchers": "Gift Vouchers",
+      "business_accounts": "Business Accounts",
+      "customer_support": "Customer Support"
+    }
+  },
+  "app": {
+    "back_to_top": "Back to top"
+  }
+}

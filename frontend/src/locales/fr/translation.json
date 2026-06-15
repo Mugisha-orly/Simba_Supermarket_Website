@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "search": "Rechercher des produits...",
+    "signin": "Se connecter",
+    "hi": "Salut, {{name}}",
+    "departments": "Toutes les catégories",
+    "wishlist": "Liste de souhaits",
+    "cart": "Panier"
+  },
+  "hero": {
+    "badge": "Le Supermarché Premium #1 du Rwanda",
+    "title_part1": "Une Qualité",
+    "title_part2": "Absolument",
+    "title_accent": "Inégalée",
+    "desc": "Du cœur de Kigali à votre table. Découvrez une collection sélectionnée de marques de classe mondiale et les produits locaux les plus frais — livrés à votre porte.",
+    "cta": "Commencer vos achats"
+  },
+  "auth": {
+    "title": "Connectez-vous pour passer votre commande",
+    "secure": "Paiement sécurisé",
+    "google": "Se connecter avec Google",
+    "or": "OU",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "forgot": "Mot de passe oublié ?",
+    "create": "Créer un compte",
+    "login": "Se connecter"
+  },
+  "categories": {
+    "label": "Acheter par département",
+    "title_part1": "Parcourir les ",
+    "title_accent": "Catégories",
+    "view_all": "Voir tout"
+  },
+  "products": {
+    "label": "Notre Catalogue",
+    "title_part1": "Sélection ",
+    "title_accent": "Minutieuse",
+    "showing": "Affichage de {{displayed}} sur {{total}} produits",
+    "sort_by": "Trier par :",
+    "sort_featured": "En vedette",
+    "sort_price_low": "Prix : Croissant",
+    "sort_price_high": "Prix : Décroissant",
+    "no_products": "Aucun produit trouvé",
+    "no_products_desc": "Essayez de modifier votre recherche ou de parcourir une autre catégorie.",
+    "load_more": "Charger plus de produits",
+    "load_meta": "Affichage de {{displayed}} sur {{total}} articles",
+    "out_of_stock": "Rupture de stock",
+    "premium": "Premium",
+    "best_seller": "Meilleure Vente",
+    "new": "Nouveau",
+    "in_stock": "En Stock"
+  },
+  "cart": {
+    "title": "Mon Panier",
+    "signed_in_as": "Connecté en tant que {{name}}",
+    "empty": "Votre panier est vide",
+    "empty_desc": "Ajoutez des articles de notre catalogue pour commencer votre commande.",
+    "browse": "Parcourir les produits",
+    "subtotal": "Sous-total",
+    "items_count": "({{count}} article)",
+    "items_count_plural": "({{count}} articles)",
+    "delivery": "Livraison (Kigali)",
+    "total": "Total",
+    "checkout": "Passer la commande",
+    "signin_checkout": "Se connecter et commander",
+    "clear": "Vider le panier",
+    "signin_prompt_1": "Connectez-vous",
+    "signin_prompt_2": " pour passer votre commande et enregistrer vos informations."
+  },
+  "wishlist": {
+    "title": "Liste de souhaits",
+    "empty": "Votre liste de souhaits est vide",
+    "empty_desc": "Enregistrez les articles que vous aimez en cliquant sur l'icône en forme de cœur.",
+    "explore": "Explorer les produits",
+    "add_cart": "Ajouter au panier",
+    "add_all": "Tout ajouter au panier"
+  },
+  "footer": {
+    "stay_updated": "Restez informé",
+    "title_part1": "Rejoignez Simba ",
+    "title_accent": "Elite",
+    "desc": "Offres exclusives, nouveautés et offres premium — directement dans votre boîte de réception.",
+    "placeholder": "Votre adresse e-mail",
+    "subscribe": "S'abonner",
+    "brand_sub": "Supermarché Élite",
+    "brand_desc": "Redéfinir l'expérience d'achat au Rwanda. L'excellence dans chaque rayon, la qualité dans chaque produit — depuis 1970.",
+    "explore": "Explorer",
+    "services": "Services",
+    "find_us": "Nous trouver",
+    "address_label": "Adresse",
+    "hotline_label": "Assistance téléphonique",
+    "rights": "© 2024 Simba Supermarché Rwanda. Tous droits réservés.",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "explore_links": {
+      "new_arrivals": "Nouveautés",
+      "featured_brands": "Marques Vedettes",
+      "fresh_produce": "Produits Frais",
+      "daily_deals": "Offres du Jour",
+      "simba_rewards": "Récompenses Simba"
+    },
+    "service_links": {
+      "store_locator": "Trouver un Magasin",
+      "track_order": "Suivre la Commande",
+      "gift_vouchers": "Chèques-Cadeaux",
+      "business_accounts": "Comptes Professionnels",
+      "customer_support": "Service Client"
+    }
+  },
+  "app": {
+    "back_to_top": "Retour en haut"
+  }
+}
