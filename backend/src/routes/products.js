@@ -1,74 +1,101 @@
 const express = require('express');
-const { products } = require('../../database/db');
+const { query } = require('../../database/db');
 const { adminOnly } = require('../middleware/adminOnly');
 
 const router = express.Router();
 
-function resolveLocale(obj, lang) {
-  if (!obj) return '';
-  if (typeof obj === 'string') return obj;
-  return obj[lang] || obj.en || Object.values(obj)[0] || '';
+const VALID_LANGS = ['en', 'fr', 'rw', 'sw'];
+
+function dbRowToProduct(row) {
+  return {
+    id:            row.id,
+    name:          row.name,          // JSONB returned as object by pg driver
+    price:         Number(row.price),
+    category:      row.category,      // JSONB
+    subcategoryId: row.subcategory_id,
+    inStock:       row.in_stock,
+    image:         row.image,
+    unit:          row.unit,
+  };
 }
 
-// GET /api/products
-router.get('/', (req, res) => {
+// ── GET /api/products ─────────────────────────────────────────────────────────
+router.get('/', async (req, res) => {
   const { search, category, sort, lang = 'en', inStock } = req.query;
+  const safeLang = VALID_LANGS.includes(lang) ? lang : 'en';
 
-  let result = products.all();
+  const conditions = [];
+  const params     = [];
 
-  if (inStock === 'true') {
-    result = result.filter(p => p.inStock);
-  }
+  if (inStock === 'true') conditions.push('in_stock = TRUE');
 
   if (category && category !== 'All') {
-    result = result.filter(p => resolveLocale(p.category, lang) === category);
+    params.push(category);
+    conditions.push(`category->>'${safeLang}' = $${params.length}`);
   }
 
   if (search) {
-    const q = search.toLowerCase();
-    result = result.filter(p =>
-      resolveLocale(p.name, lang).toLowerCase().includes(q) ||
-      resolveLocale(p.category, lang).toLowerCase().includes(q)
-    );
+    params.push(`%${search}%`);
+    const n = params.length;
+    // Search across all four language fields
+    conditions.push(`(
+      name->>'en' ILIKE $${n} OR name->>'fr' ILIKE $${n} OR
+      name->>'rw' ILIKE $${n} OR name->>'sw' ILIKE $${n} OR
+      category->>'en' ILIKE $${n}
+    )`);
   }
 
-  if (sort === 'PriceLow')  result.sort((a, b) => a.price - b.price);
-  if (sort === 'PriceHigh') result.sort((a, b) => b.price - a.price);
+  const where  = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+  const order  = sort === 'PriceLow'  ? 'ORDER BY price ASC'
+               : sort === 'PriceHigh' ? 'ORDER BY price DESC'
+               : '';
 
-  res.json({ products: result, total: result.length });
+  const { rows } = await query(`SELECT * FROM products ${where} ${order}`, params);
+  const products  = rows.map(dbRowToProduct);
+
+  res.json({ products, total: products.length });
 });
 
-// GET /api/products/categories
-router.get('/categories', (req, res) => {
+// ── GET /api/products/categories ─────────────────────────────────────────────
+router.get('/categories', async (req, res) => {
   const { lang = 'en' } = req.query;
-  const all = products.all();
-  const cats = [...new Set(all.map(p => resolveLocale(p.category, lang)).filter(Boolean))];
+  const safeLang = VALID_LANGS.includes(lang) ? lang : 'en';
+
+  const { rows } = await query(
+    `SELECT DISTINCT category->>'${safeLang}' AS cat FROM products ORDER BY cat`
+  );
+  const cats = rows.map(r => r.cat).filter(Boolean);
   res.json(['All', ...cats]);
 });
 
-// GET /api/products/:id
-router.get('/:id', (req, res) => {
-  const product = products.findById(req.params.id);
-  if (!product) return res.status(404).json({ error: 'Product not found' });
-  res.json(product);
+// ── GET /api/products/:id ─────────────────────────────────────────────────────
+router.get('/:id', async (req, res) => {
+  const { rows } = await query('SELECT * FROM products WHERE id = $1', [req.params.id]);
+  if (!rows.length) return res.status(404).json({ error: 'Product not found' });
+  res.json(dbRowToProduct(rows[0]));
 });
 
-// PATCH /api/products/:id  — admin only
-router.patch('/:id', adminOnly, (req, res) => {
-  const product = products.findById(req.params.id);
-  if (!product) return res.status(404).json({ error: 'Product not found' });
+// ── PATCH /api/products/:id  (admin only) ─────────────────────────────────────
+router.patch('/:id', adminOnly, async (req, res) => {
+  const { rows: existing } = await query('SELECT id FROM products WHERE id = $1', [req.params.id]);
+  if (!existing.length) return res.status(404).json({ error: 'Product not found' });
 
   const { inStock, price } = req.body;
-  const updates = {};
-  if (inStock !== undefined) updates.inStock = Boolean(inStock);
-  if (price   !== undefined) updates.price   = Number(price);
+  const setClauses = [];
+  const params     = [];
 
-  if (Object.keys(updates).length === 0) {
+  if (inStock !== undefined) { params.push(Boolean(inStock)); setClauses.push(`in_stock = $${params.length}`); }
+  if (price   !== undefined) { params.push(Number(price));    setClauses.push(`price    = $${params.length}`); }
+
+  if (!setClauses.length)
     return res.status(400).json({ error: 'No valid fields to update' });
-  }
 
-  const updated = products.updateById(req.params.id, updates);
-  res.json(updated);
+  params.push(req.params.id);
+  const { rows } = await query(
+    `UPDATE products SET ${setClauses.join(', ')} WHERE id = $${params.length} RETURNING *`,
+    params
+  );
+  res.json(dbRowToProduct(rows[0]));
 });
 
 module.exports = router;

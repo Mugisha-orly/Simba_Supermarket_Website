@@ -1,15 +1,22 @@
+/**
+ * Seeds the PostgreSQL products table from simba_products.json.
+ * Run: npm run seed
+ * Safe to run multiple times — uses ON CONFLICT DO NOTHING.
+ */
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const path = require('path');
 const fs   = require('fs');
-const { initDb, products } = require('./db');
+const { query, initDb, getPool } = require('./db');
 
-function seed() {
-  initDb();
+const BATCH_SIZE = 100;
 
-  const existing = products.count();
-  if (existing > 0) {
-    console.log(`Products already seeded (${existing} records). Skipping.`);
-    console.log('To re-seed, delete database/data/products.json and run again.');
+async function seed() {
+  await initDb();
+
+  const { rows } = await query('SELECT COUNT(*)::int AS count FROM products');
+  if (rows[0].count > 0) {
+    console.log(`Products already seeded (${rows[0].count} rows). Skipping.`);
+    console.log('To re-seed, run: DELETE FROM products; then npm run seed');
     return;
   }
 
@@ -19,24 +26,40 @@ function seed() {
     process.exit(1);
   }
 
-  const raw  = fs.readFileSync(dataPath, 'utf-8');
-  const data = JSON.parse(raw);
-  const prods = data.products || [];
+  const { products } = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+  console.log(`Inserting ${products.length} products in batches of ${BATCH_SIZE}…`);
 
-  for (const p of prods) {
-    products.insert({
-      id:            p.id,
-      name:          p.name,
-      price:         p.price,
-      category:      p.category,
-      subcategoryId: p.subcategoryId || null,
-      inStock:       p.inStock !== false,
-      image:         p.image || null,
-      unit:          p.unit  || null,
-    });
+  let inserted = 0;
+  for (let i = 0; i < products.length; i += BATCH_SIZE) {
+    const batch  = products.slice(i, i + BATCH_SIZE);
+    const values = batch.map((_, j) => {
+      const base = j * 7;
+      return `($${base+1}, $${base+2}, $${base+3}, $${base+4}, $${base+5}, $${base+6}, $${base+7})`;
+    }).join(', ');
+
+    const params = batch.flatMap(p => [
+      p.id,
+      JSON.stringify(p.name),
+      p.price,
+      JSON.stringify(p.category),
+      p.subcategoryId ?? null,
+      p.inStock !== false,
+      p.image ?? null,
+    ]);
+
+    await query(
+      `INSERT INTO products (id, name, price, category, subcategory_id, in_stock, image)
+       VALUES ${values}
+       ON CONFLICT (id) DO NOTHING`,
+      params
+    );
+    inserted += batch.length;
+    process.stdout.write(`\r  ${inserted} / ${products.length}`);
   }
 
-  console.log(`Seeded ${prods.length} products into database/data/products.json`);
+  console.log(`\nSeeded ${inserted} products successfully.`);
 }
 
-seed();
+seed()
+  .catch(err => { console.error('Seed failed:', err.message); process.exit(1); })
+  .finally(() => getPool().end());

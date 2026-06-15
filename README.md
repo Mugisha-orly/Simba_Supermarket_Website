@@ -12,13 +12,33 @@ Simba_Supermarket_Website/
 
 ## Quick Start
 
-### 1. Backend
+### 1. PostgreSQL (required — version 16 or newer)
+
+```bash
+# macOS
+brew install postgresql@16 && brew services start postgresql@16
+
+# Ubuntu / Debian
+sudo apt install postgresql-16
+
+# Windows — download installer from https://www.postgresql.org/download/windows/
+```
+
+Create the database:
+```sql
+psql -U postgres
+CREATE DATABASE simba_supermarket;
+\q
+```
+
+### 2. Backend
 
 ```bash
 cd backend
-cp .env.example .env      # fill in JWT_SECRET, GEMINI_API_KEY, GOOGLE_CLIENT_ID
+cp .env.example .env      # set DATABASE_URL, JWT_SECRET, GEMINI_API_KEY, GOOGLE_CLIENT_ID
 npm install
-npm run seed              # seeds 789 products into database/data/products.json
+npm run migrate           # creates tables (users, products, orders)
+npm run seed              # inserts 789 products
 npm run dev               # starts on http://localhost:5000
 ```
 
@@ -78,10 +98,15 @@ The Vite dev server automatically proxies `/api/*` requests to the backend at `l
 
 **Frontend:** React 19, Vite 8, Tailwind CSS 3, Framer Motion, i18next (EN/FR/RW/SW), Lucide icons
 
-**Backend:** Node.js, Express 4, JSON file store (no native deps), bcryptjs, jsonwebtoken, Google Auth Library, Google Generative AI (Gemini)
+**Backend:** Node.js, Express 4, **PostgreSQL 16+** (via `pg` / node-postgres), bcryptjs, jsonwebtoken, Google Auth Library, Google Generative AI (Gemini)
 
 ---
 
 ## Making a User Admin
 
-The `database/data/users.json` file stores all users. To grant admin access, open the file and change `"role": "customer"` to `"role": "admin"` for the desired user, then restart the backend.
+```sql
+psql -U postgres -d simba_supermarket
+UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
+```
+
+The user's JWT will carry the `admin` role on next login.

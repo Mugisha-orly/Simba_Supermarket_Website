@@ -1,5 +1,5 @@
 const express = require('express');
-const { orders } = require('../../database/db');
+const { query } = require('../../database/db');
 const { requireAuth } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
 
@@ -12,77 +12,92 @@ const VALID_STATUSES = [
   'Out for Delivery', 'Delivered', 'Completed', 'Cancelled',
 ];
 
-// POST /api/orders  — place a new order (auth required)
-router.post('/', requireAuth, (req, res) => {
+function dbRowToOrder(row) {
+  return {
+    id:       row.id,
+    userId:   row.user_id,
+    customer: row.customer,   // JSONB
+    items:    row.items,      // JSONB
+    type:     row.type,
+    branch:   row.branch,     // JSONB
+    total:    Number(row.total),
+    status:   row.status,
+    date:     row.created_at,
+  };
+}
+
+// ── POST /api/orders  (auth required) ────────────────────────────────────────
+router.post('/', requireAuth, async (req, res) => {
   const { items, type = 'Delivery', branch = null } = req.body;
 
-  if (!items || !Array.isArray(items) || items.length === 0) {
+  if (!Array.isArray(items) || items.length === 0)
     return res.status(400).json({ error: 'Order must contain at least one item' });
-  }
 
   const customer = {
-    id:      req.user.id,
-    name:    req.user.name,
-    email:   req.user.email,
-    picture: req.user.picture || null,
+    id: req.user.id, name: req.user.name,
+    email: req.user.email, picture: req.user.picture || null,
   };
 
-  const subtotal = items.reduce((sum, item) => sum + (item.price * (item.qty || 1)), 0);
-  const total = subtotal + (type === 'Delivery' ? DELIVERY_FEE : 0);
+  const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+  const total    = subtotal + (type === 'Delivery' ? DELIVERY_FEE : 0);
+  const orderId  = `ORD-${Date.now()}`;
 
-  const order = orders.insert({
-    id:        `ORD-${Date.now()}`,
-    userId:    req.user.id,
-    customer,
-    items,
-    type,
-    branch,
-    total,
-    status:    'Pending',
-    date:      new Date().toISOString(),
-  });
+  const { rows } = await query(
+    `INSERT INTO orders (id, user_id, customer, items, type, branch, total, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, 'Pending')
+     RETURNING *`,
+    [
+      orderId,
+      req.user.id,
+      JSON.stringify(customer),
+      JSON.stringify(items),
+      type,
+      branch ? JSON.stringify(branch) : null,
+      total,
+    ]
+  );
 
-  res.status(201).json(order);
+  res.status(201).json(dbRowToOrder(rows[0]));
 });
 
-// GET /api/orders
-router.get('/', requireAuth, (req, res) => {
+// ── GET /api/orders ───────────────────────────────────────────────────────────
+router.get('/', requireAuth, async (req, res) => {
   let result;
   if (req.user.role === 'admin') {
-    result = orders.all();
+    result = await query('SELECT * FROM orders ORDER BY created_at DESC');
   } else {
-    result = orders.where(o => o.userId === req.user.id);
+    result = await query(
+      'SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC',
+      [req.user.id]
+    );
   }
-  // Most recent first
-  result = [...result].sort((a, b) => new Date(b.date) - new Date(a.date));
-  res.json(result);
+  res.json(result.rows.map(dbRowToOrder));
 });
 
-// GET /api/orders/:id
-router.get('/:id', requireAuth, (req, res) => {
-  const order = orders.findById(req.params.id);
-  if (!order) return res.status(404).json({ error: 'Order not found' });
+// ── GET /api/orders/:id ───────────────────────────────────────────────────────
+router.get('/:id', requireAuth, async (req, res) => {
+  const { rows } = await query('SELECT * FROM orders WHERE id = $1', [req.params.id]);
+  if (!rows.length) return res.status(404).json({ error: 'Order not found' });
 
-  if (req.user.role !== 'admin' && order.userId !== req.user.id) {
+  const order = dbRowToOrder(rows[0]);
+  if (req.user.role !== 'admin' && order.userId !== req.user.id)
     return res.status(403).json({ error: 'Access denied' });
-  }
 
   res.json(order);
 });
 
-// PATCH /api/orders/:id/status  — admin only
-router.patch('/:id/status', adminOnly, (req, res) => {
+// ── PATCH /api/orders/:id/status  (admin only) ───────────────────────────────
+router.patch('/:id/status', adminOnly, async (req, res) => {
   const { status } = req.body;
-
-  if (!VALID_STATUSES.includes(status)) {
+  if (!VALID_STATUSES.includes(status))
     return res.status(400).json({ error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}` });
-  }
 
-  const order = orders.findById(req.params.id);
-  if (!order) return res.status(404).json({ error: 'Order not found' });
-
-  const updated = orders.updateById(req.params.id, { status });
-  res.json(updated);
+  const { rows } = await query(
+    'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
+    [status, req.params.id]
+  );
+  if (!rows.length) return res.status(404).json({ error: 'Order not found' });
+  res.json(dbRowToOrder(rows[0]));
 });
 
 module.exports = router;

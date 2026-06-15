@@ -1,11 +1,12 @@
 {
   "name": "simba-supermarket-backend",
   "version": "1.0.0",
-  "description": "Node.js REST API backend for Simba Supermarket",
+  "description": "Node.js REST API backend for Simba Supermarket — PostgreSQL 16+",
   "main": "server.js",
   "scripts": {
     "dev": "node --watch server.js",
     "start": "node server.js",
+    "migrate": "node database/migrate.js",
     "seed": "node database/seed.js"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "google-auth-library": "^9.15.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.0"
   }
 }

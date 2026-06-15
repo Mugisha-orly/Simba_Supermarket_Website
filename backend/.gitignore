@@ -1,3 +1,4 @@
 node_modules/
 .env
+# Legacy JSON file store (replaced by PostgreSQL)
 database/data/

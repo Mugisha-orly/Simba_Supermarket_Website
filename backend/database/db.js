@@ -1,96 +1,90 @@
 /**
- * Simple synchronous JSON file store.
- * Each collection is a separate JSON file in database/data/.
- * No native modules required — works on any Node.js platform.
+ * PostgreSQL connection pool (node-postgres / pg).
+ * Requires PostgreSQL 16 or newer.
+ *
+ * Set DATABASE_URL in backend/.env, e.g.:
+ *   postgresql://postgres:password@localhost:5432/simba_supermarket
  */
-const fs   = require('fs');
-const path = require('path');
+const { Pool } = require('pg');
 
-const DATA_DIR = path.join(__dirname, 'data');
+let pool;
 
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+function getPool() {
+  if (!pool) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      // Uncomment for Render / Railway / Supabase (SSL required):
+      // ssl: { rejectUnauthorized: false },
+    });
+
+    pool.on('error', (err) => {
+      console.error('PostgreSQL pool error:', err.message);
+    });
   }
+  return pool;
 }
 
-function filePath(name) {
-  return path.join(DATA_DIR, `${name}.json`);
-}
-
-function read(name) {
-  const fp = filePath(name);
-  if (!fs.existsSync(fp)) return [];
+/**
+ * Run a parameterised SQL query.
+ * @param {string} text  SQL with $1, $2, … placeholders
+ * @param {any[]}  [params]
+ * @returns {Promise<import('pg').QueryResult>}
+ */
+async function query(text, params) {
+  const client = await getPool().connect();
   try {
-    return JSON.parse(fs.readFileSync(fp, 'utf-8'));
-  } catch {
-    return [];
+    return await client.query(text, params);
+  } finally {
+    client.release();
   }
 }
 
-function write(name, records) {
-  fs.writeFileSync(filePath(name), JSON.stringify(records, null, 2));
+/**
+ * Create all tables (idempotent – safe to run on every startup).
+ * Requires PostgreSQL 16+.
+ */
+async function initDb() {
+  await query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id            SERIAL PRIMARY KEY,
+      name          VARCHAR(255)  NOT NULL,
+      email         VARCHAR(255)  UNIQUE NOT NULL,
+      password_hash TEXT,
+      google_id     VARCHAR(255)  UNIQUE,
+      role          VARCHAR(50)   NOT NULL DEFAULT 'customer',
+      picture       TEXT,
+      created_at    TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS products (
+      id              INTEGER       PRIMARY KEY,
+      name            JSONB         NOT NULL,
+      price           NUMERIC(12,2) NOT NULL,
+      category        JSONB         NOT NULL,
+      subcategory_id  INTEGER,
+      in_stock        BOOLEAN       NOT NULL DEFAULT TRUE,
+      image           TEXT,
+      unit            VARCHAR(50)
+    );
+
+    CREATE TABLE IF NOT EXISTS orders (
+      id          VARCHAR(60)   PRIMARY KEY,
+      user_id     INTEGER       REFERENCES users(id) ON DELETE SET NULL,
+      customer    JSONB         NOT NULL,
+      items       JSONB         NOT NULL,
+      type        VARCHAR(50)   NOT NULL DEFAULT 'Delivery',
+      branch      JSONB,
+      total       NUMERIC(12,2) NOT NULL,
+      status      VARCHAR(100)  NOT NULL DEFAULT 'Pending',
+      created_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_orders_user_id  ON orders(user_id);
+    CREATE INDEX IF NOT EXISTS idx_orders_status   ON orders(status);
+    CREATE INDEX IF NOT EXISTS idx_products_stock  ON products(in_stock);
+  `);
+
+  console.log('PostgreSQL tables ready.');
 }
 
-// ── Collection factory ────────────────────────────────────────────────────────
-class Collection {
-  constructor(name) {
-    this.name = name;
-  }
-
-  all() {
-    return read(this.name);
-  }
-
-  findById(id) {
-    return this.all().find(r => String(r.id) === String(id)) || null;
-  }
-
-  findOne(predicate) {
-    return this.all().find(predicate) || null;
-  }
-
-  where(predicate) {
-    return this.all().filter(predicate);
-  }
-
-  count() {
-    return this.all().length;
-  }
-
-  insert(record) {
-    const records = this.all();
-    records.push(record);
-    write(this.name, records);
-    return record;
-  }
-
-  updateById(id, updates) {
-    const records = this.all();
-    const idx = records.findIndex(r => String(r.id) === String(id));
-    if (idx === -1) return null;
-    records[idx] = { ...records[idx], ...updates };
-    write(this.name, records);
-    return records[idx];
-  }
-
-  removeById(id) {
-    const records = this.all();
-    const filtered = records.filter(r => String(r.id) !== String(id));
-    write(this.name, filtered);
-  }
-}
-
-// ── Singleton collections ─────────────────────────────────────────────────────
-const collections = {
-  users:    new Collection('users'),
-  products: new Collection('products'),
-  orders:   new Collection('orders'),
-};
-
-function initDb() {
-  ensureDataDir();
-  console.log('JSON file store ready at', DATA_DIR);
-}
-
-module.exports = { initDb, ...collections };
+module.exports = { query, initDb, getPool };
