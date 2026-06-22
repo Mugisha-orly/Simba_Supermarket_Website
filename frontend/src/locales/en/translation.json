@@ -5,7 +5,11 @@
     "hi": "Hi, {{name}}",
     "departments": "All Categories",
     "wishlist": "Wishlist",
-    "cart": "Cart"
+    "cart": "Cart",
+    "my_account": "My Account",
+    "sign_out": "Sign Out",
+    "dark_mode": "Dark Mode",
+    "language": "Language"
   },
   "hero": {
     "badge": "Rwanda's #1 Premium Supermarket",
@@ -13,10 +17,18 @@
     "title_part2": "Beyond",
     "title_accent": "Measure",
     "desc": "From the heart of Kigali to your table. Experience a curated collection of world-class brands and the freshest local produce — delivered to your door.",
-    "cta": "Start Shopping"
+    "cta": "Start Shopping",
+    "stat_products": "Products",
+    "stat_branches": "Branches",
+    "stat_years": "Years Serving Rwanda",
+    "stat_customers": "Happy Customers"
   },
   "auth": {
     "title": "Sign in to place your order",
+    "standalone_title": "Welcome to Simba",
+    "standalone_subtitle": "Sign in to track orders and manage your account.",
+    "standalone_success": "You're signed in!",
+    "standalone_success_desc": "Welcome back, {{name}}. You can now track orders and access your account.",
     "secure": "Secure Checkout",
     "google": "Sign in with Google",
     "or": "OR",
@@ -24,7 +36,15 @@
     "password": "Password",
     "forgot": "Forgot password?",
     "create": "Create Account",
-    "login": "Sign In"
+    "login": "Sign In",
+    "full_name": "Full name",
+    "confirm_password": "Confirm password",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "terms_agree": "By creating an account you agree to our",
+    "terms": "Terms of Service",
+    "and": "and",
+    "privacy": "Privacy Policy"
   },
   "categories": {
     "label": "Shop by Department",
@@ -49,7 +69,13 @@
     "premium": "Premium",
     "best_seller": "Best Seller",
     "new": "New",
-    "in_stock": "In Stock"
+    "in_stock": "In Stock",
+    "add_to_cart": "Add to cart",
+    "add_to_wishlist": "Add to wishlist",
+    "remove_wishlist": "Remove from wishlist",
+    "view_details": "View Details",
+    "related": "You May Also Like",
+    "back": "Back to Products"
   },
   "cart": {
     "title": "My Cart",
@@ -61,12 +87,22 @@
     "items_count": "({{count}} item)",
     "items_count_plural": "({{count}} items)",
     "delivery": "Delivery (Kigali)",
+    "delivery_free": "Free Pickup",
     "total": "Total",
     "checkout": "Place Order",
     "signin_checkout": "Sign In & Place Order",
     "clear": "Clear Cart",
     "signin_prompt_1": "Sign in",
-    "signin_prompt_2": " to place your order and save your information."
+    "signin_prompt_2": " to place your order and save your information.",
+    "pickup_branch": "Pickup branch",
+    "nearest_branch": "Nearest branch",
+    "hide_map": "Hide map",
+    "view_map": "View on map",
+    "delivery_option": "Delivery",
+    "pickup_option": "Pickup",
+    "remove_item": "Remove",
+    "place_order": "Place Order",
+    "signin_place_order": "Sign In & Place Order"
   },
   "wishlist": {
     "title": "Wishlist",
@@ -75,6 +111,22 @@
     "explore": "Explore Products",
     "add_cart": "Add to Cart",
     "add_all": "Add All to Cart"
+  },
+  "customer": {
+    "title": "My Orders",
+    "subtitle": "Track your recent orders and their status.",
+    "back": "Back to Store",
+    "no_orders": "No orders yet",
+    "no_orders_desc": "You haven't placed any orders yet. Start shopping!",
+    "order_id": "Order #{{id}}",
+    "items_label": "Items:",
+    "status_pending": "Pending",
+    "status_confirmed": "Confirmed",
+    "status_delivered": "Delivered",
+    "status_completed": "Completed",
+    "profile_title": "My Profile",
+    "profile_member": "Member",
+    "account_type": "Account type"
   },
   "footer": {
     "stay_updated": "Stay Updated",
@@ -110,5 +162,14 @@
   },
   "app": {
     "back_to_top": "Back to top"
+  },
+  "mobile": {
+    "categories": "Categories",
+    "search_placeholder": "Search products...",
+    "sign_in": "Sign In / Register",
+    "my_account": "My Account",
+    "sign_out": "Sign Out",
+    "dark_mode": "Dark Mode",
+    "language": "Language"
   }
 }

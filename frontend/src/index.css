@@ -407,9 +407,53 @@ input, select { font-family: inherit; }
   .navbar-search { max-width: 300px; }
   .navbar-top-left span:last-child { display: none; }
 }
+
+/* Mobile sticky search bar — hidden on desktop */
+.mobile-search-bar {
+  display: none;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.mobile-search-input {
+  width: 100%;
+  padding: 11px 40px 11px 40px;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: var(--transition);
+}
+
+.mobile-search-input:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.mobile-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.navbar-top-label { display: inline; }
+
 @media (max-width: 768px) {
-  .navbar-top { display: none; }
+  /* Show top bar on mobile but compact */
+  .navbar-top { display: block; padding: 6px 0; }
+  .navbar-top-label { display: none; }
+  /* Hide desktop search — we use the sticky mobile bar */
   .navbar-search { display: none; }
+  /* Show mobile sticky search below navbar */
+  .mobile-search-bar { display: block; }
+  /* Navbar CTA: show icon only, hide text label */
   .navbar-cta span { display: none; }
   .navbar-cta { padding: 11px; }
   .mobile-menu-btn { display: flex; }

@@ -5,7 +5,11 @@
     "hi": "Habari, {{name}}",
     "departments": "Idara Zote",
     "wishlist": "Orodha ya matamanio",
-    "cart": "Kikapu"
+    "cart": "Kikapu",
+    "my_account": "Akaunti Yangu",
+    "sign_out": "Toka",
+    "dark_mode": "Hali ya Giza",
+    "language": "Lugha"
   },
   "hero": {
     "badge": "Duka namba 1 la Premium nchini Rwanda",
@@ -13,10 +17,18 @@
     "title_part2": "Zaidi ya",
     "title_accent": "Kipimo",
     "desc": "Kutoka moyoni mwa Kigali hadi meza yako. Pata mkusanyiko wa chapa za kiwango cha juu duniani na mazao mapya ya ndani — yaletwa hadi mlangoni pako.",
-    "cta": "Anza Kununua"
+    "cta": "Anza Kununua",
+    "stat_products": "Bidhaa",
+    "stat_branches": "Matawi",
+    "stat_years": "Miaka Ikihudumia Rwanda",
+    "stat_customers": "Wateja Waliofurahi"
   },
   "auth": {
     "title": "Ingia ili kuagiza",
+    "standalone_title": "Karibu kwa Simba",
+    "standalone_subtitle": "Ingia ili kufuatilia maagizo na kusimamia akaunti yako.",
+    "standalone_success": "Umeingia!",
+    "standalone_success_desc": "Karibu, {{name}}. Sasa unaweza kufuatilia maagizo yako.",
     "secure": "Malipo Salama",
     "google": "Ingia na Google",
     "or": "AU",
@@ -24,7 +36,15 @@
     "password": "Nywila",
     "forgot": "Umesahau nywila?",
     "create": "Fungua Akaunti",
-    "login": "Ingia"
+    "login": "Ingia",
+    "full_name": "Jina kamili",
+    "confirm_password": "Thibitisha nywila",
+    "no_account": "Huna akaunti?",
+    "have_account": "Una akaunti tayari?",
+    "terms_agree": "Kwa kuunda akaunti, unakubali",
+    "terms": "Masharti ya Huduma",
+    "and": "na",
+    "privacy": "Sera ya Faragha"
   },
   "categories": {
     "label": "Nunua kwa Idara",
@@ -49,7 +69,13 @@
     "premium": "Premium",
     "best_seller": "Inauzwa Sana",
     "new": "Mpya",
-    "in_stock": "Ipo"
+    "in_stock": "Ipo",
+    "add_to_cart": "Weka kwenye Kikapu",
+    "add_to_wishlist": "Ongeza kwenye Orodha",
+    "remove_wishlist": "Ondoa kutoka Orodha",
+    "view_details": "Ona Maelezo",
+    "related": "Unaweza Kupenda Pia",
+    "back": "Rudi kwa Bidhaa"
   },
   "cart": {
     "title": "Kikapu Changu",
@@ -61,12 +87,22 @@
     "items_count": "(Bidhaa {{count}})",
     "items_count_plural": "(Bidhaa {{count}})",
     "delivery": "Uwasilishaji (Kigali)",
+    "delivery_free": "Kuokota Bure",
     "total": "Jumla",
     "checkout": "Weka Agizo",
     "signin_checkout": "Ingia na Uweke Agizo",
     "clear": "Futa Kikapu",
     "signin_prompt_1": "Ingia",
-    "signin_prompt_2": " ili kuweka agizo lako na kuhifadhi taarifa zako."
+    "signin_prompt_2": " ili kuweka agizo lako na kuhifadhi taarifa zako.",
+    "pickup_branch": "Tawi la kuokota",
+    "nearest_branch": "Tawi lililo karibu",
+    "hide_map": "Ficha ramani",
+    "view_map": "Ona kwenye ramani",
+    "delivery_option": "Uwasilishaji",
+    "pickup_option": "Kuokota",
+    "remove_item": "Ondoa",
+    "place_order": "Weka Agizo",
+    "signin_place_order": "Ingia na Uweke Agizo"
   },
   "wishlist": {
     "title": "Orodha ya Matamanio",
@@ -75,6 +111,22 @@
     "explore": "Chunguza Bidhaa",
     "add_cart": "Weka kwenye Kikapu",
     "add_all": "Weka Zote kwenye Kikapu"
+  },
+  "customer": {
+    "title": "Maagizo Yangu",
+    "subtitle": "Fuatilia maagizo yako ya hivi karibuni na hali yake.",
+    "back": "Rudi Dukani",
+    "no_orders": "Hakuna maagizo bado",
+    "no_orders_desc": "Bado hujaweka agizo. Anza kununua!",
+    "order_id": "Agizo #{{id}}",
+    "items_label": "Bidhaa:",
+    "status_pending": "Inasubiri",
+    "status_confirmed": "Imethibitishwa",
+    "status_delivered": "Imesafirishwa",
+    "status_completed": "Imekamilika",
+    "profile_title": "Wasifu Wangu",
+    "profile_member": "Mwanachama",
+    "account_type": "Aina ya akaunti"
   },
   "footer": {
     "stay_updated": "Kaa na Taarifa",
@@ -110,5 +162,14 @@
   },
   "app": {
     "back_to_top": "Rudi juu"
+  },
+  "mobile": {
+    "categories": "Kategoria",
+    "search_placeholder": "Tafuta bidhaa...",
+    "sign_in": "Ingia / Jisajili",
+    "my_account": "Akaunti Yangu",
+    "sign_out": "Toka",
+    "dark_mode": "Hali ya Giza",
+    "language": "Lugha"
   }
 }

@@ -76,6 +76,26 @@ const Hero = ({ onShopNow }) => {
                 {t('hero.cta')}
                 <ArrowRight size={18} />
               </button>
+
+              {/* Stats row — visible immediately, proves localization */}
+              <div className="hero-stats">
+                <div className="hero-stat">
+                  <h4>789+</h4>
+                  <span>{t('hero.stat_products', 'Products')}</span>
+                </div>
+                <div className="hero-stat">
+                  <h4>5</h4>
+                  <span>{t('hero.stat_branches', 'Branches')}</span>
+                </div>
+                <div className="hero-stat">
+                  <h4>50+</h4>
+                  <span>{t('hero.stat_years', 'Years Serving Rwanda')}</span>
+                </div>
+                <div className="hero-stat">
+                  <h4>100K+</h4>
+                  <span>{t('hero.stat_customers', 'Happy Customers')}</span>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
 

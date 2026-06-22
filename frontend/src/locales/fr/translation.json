@@ -1,11 +1,15 @@
 {
   "nav": {
-    "search": "Rechercher des produits...",
+    "search": "Rechercher des produits, marques, catégories...",
     "signin": "Se connecter",
     "hi": "Salut, {{name}}",
     "departments": "Toutes les catégories",
     "wishlist": "Liste de souhaits",
-    "cart": "Panier"
+    "cart": "Panier",
+    "my_account": "Mon Compte",
+    "sign_out": "Se déconnecter",
+    "dark_mode": "Mode Sombre",
+    "language": "Langue"
   },
   "hero": {
     "badge": "Le Supermarché Premium #1 du Rwanda",
@@ -13,10 +17,18 @@
     "title_part2": "Absolument",
     "title_accent": "Inégalée",
     "desc": "Du cœur de Kigali à votre table. Découvrez une collection sélectionnée de marques de classe mondiale et les produits locaux les plus frais — livrés à votre porte.",
-    "cta": "Commencer vos achats"
+    "cta": "Commencer vos achats",
+    "stat_products": "Produits",
+    "stat_branches": "Succursales",
+    "stat_years": "Ans au service du Rwanda",
+    "stat_customers": "Clients satisfaits"
   },
   "auth": {
     "title": "Connectez-vous pour passer votre commande",
+    "standalone_title": "Bienvenue chez Simba",
+    "standalone_subtitle": "Connectez-vous pour suivre vos commandes et gérer votre compte.",
+    "standalone_success": "Vous êtes connecté !",
+    "standalone_success_desc": "Bienvenue, {{name}}. Vous pouvez désormais suivre vos commandes.",
     "secure": "Paiement sécurisé",
     "google": "Se connecter avec Google",
     "or": "OU",
@@ -24,7 +36,15 @@
     "password": "Mot de passe",
     "forgot": "Mot de passe oublié ?",
     "create": "Créer un compte",
-    "login": "Se connecter"
+    "login": "Se connecter",
+    "full_name": "Nom complet",
+    "confirm_password": "Confirmer le mot de passe",
+    "no_account": "Pas encore de compte ?",
+    "have_account": "Vous avez déjà un compte ?",
+    "terms_agree": "En créant un compte, vous acceptez nos",
+    "terms": "Conditions d'utilisation",
+    "and": "et",
+    "privacy": "Politique de confidentialité"
   },
   "categories": {
     "label": "Acheter par département",
@@ -49,7 +69,13 @@
     "premium": "Premium",
     "best_seller": "Meilleure Vente",
     "new": "Nouveau",
-    "in_stock": "En Stock"
+    "in_stock": "En Stock",
+    "add_to_cart": "Ajouter au panier",
+    "add_to_wishlist": "Ajouter aux souhaits",
+    "remove_wishlist": "Retirer des souhaits",
+    "view_details": "Voir les détails",
+    "related": "Vous aimerez aussi",
+    "back": "Retour aux produits"
   },
   "cart": {
     "title": "Mon Panier",
@@ -61,12 +87,22 @@
     "items_count": "({{count}} article)",
     "items_count_plural": "({{count}} articles)",
     "delivery": "Livraison (Kigali)",
+    "delivery_free": "Retrait gratuit",
     "total": "Total",
     "checkout": "Passer la commande",
     "signin_checkout": "Se connecter et commander",
     "clear": "Vider le panier",
     "signin_prompt_1": "Connectez-vous",
-    "signin_prompt_2": " pour passer votre commande et enregistrer vos informations."
+    "signin_prompt_2": " pour passer votre commande et enregistrer vos informations.",
+    "pickup_branch": "Succursale de retrait",
+    "nearest_branch": "Succursale la plus proche",
+    "hide_map": "Masquer la carte",
+    "view_map": "Voir sur la carte",
+    "delivery_option": "Livraison",
+    "pickup_option": "Retrait",
+    "remove_item": "Supprimer",
+    "place_order": "Passer la commande",
+    "signin_place_order": "Connexion & Commande"
   },
   "wishlist": {
     "title": "Liste de souhaits",
@@ -75,6 +111,22 @@
     "explore": "Explorer les produits",
     "add_cart": "Ajouter au panier",
     "add_all": "Tout ajouter au panier"
+  },
+  "customer": {
+    "title": "Mes Commandes",
+    "subtitle": "Suivez vos commandes récentes et leur statut.",
+    "back": "Retour au magasin",
+    "no_orders": "Aucune commande",
+    "no_orders_desc": "Vous n'avez pas encore passé de commande. Commencez vos achats !",
+    "order_id": "Commande #{{id}}",
+    "items_label": "Articles :",
+    "status_pending": "En attente",
+    "status_confirmed": "Confirmé",
+    "status_delivered": "Livré",
+    "status_completed": "Terminé",
+    "profile_title": "Mon Profil",
+    "profile_member": "Membre",
+    "account_type": "Type de compte"
   },
   "footer": {
     "stay_updated": "Restez informé",
@@ -110,5 +162,14 @@
   },
   "app": {
     "back_to_top": "Retour en haut"
+  },
+  "mobile": {
+    "categories": "Catégories",
+    "search_placeholder": "Rechercher des produits...",
+    "sign_in": "Connexion / Inscription",
+    "my_account": "Mon Compte",
+    "sign_out": "Se déconnecter",
+    "dark_mode": "Mode Sombre",
+    "language": "Langue"
   }
 }

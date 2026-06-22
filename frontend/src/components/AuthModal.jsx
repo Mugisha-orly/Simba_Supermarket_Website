@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Mail, Lock, Eye, EyeOff, ShoppingBag, CheckCircle, ArrowRight, MapPin } from 'lucide-react';
+import { X, User, Mail, Lock, Eye, EyeOff, ShoppingBag, CheckCircle, ArrowRight, MapPin, UserCheck } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import { useTranslation } from 'react-i18next';
 import confetti from 'canvas-confetti';
 
-const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = false, user, orderType, selectedBranch }) => {
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
+/**
+ * AuthModal — two modes:
+ *  mode="checkout" (default) — used when placing an order; shows cart summary, calls onAuthSuccess with order data
+ *  mode="account"            — standalone login/register; no cart shown, success screen says "You're signed in!"
+ */
+const AuthModal = ({
+  isOpen, onClose, onAuthSuccess,
+  cartItems = [], skipToSuccess = false,
+  user, orderType, selectedBranch,
+  mode = 'checkout',
+}) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState(() => skipToSuccess ? 'success' : 'login');
   const [showPass, setShowPass] = useState(false);
@@ -28,20 +40,25 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, skipToSuccess]);
 
-  const orderTotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0) + (orderType === 'Delivery' ? 2000 : 0);
+  const orderTotal = (cartItems || []).reduce((sum, item) => sum + item.price * item.qty, 0) + (orderType === 'Delivery' ? 2000 : 0);
+  const isCheckout = mode === 'checkout';
 
   const finishAuth = (userData, token) => {
     setLoading(false);
     setTab('success');
-    confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 }, colors: ['#FF5722', '#FF9800', '#FFFFFF', '#22c55e'] });
-    setTimeout(() => { onAuthSuccess(userData, token); }, 2400);
+    if (isCheckout) {
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 }, colors: ['#FF5722', '#FF9800', '#FFFFFF', '#22c55e'] });
+    } else {
+      confetti({ particleCount: 80, spread: 60, origin: { y: 0.4 }, colors: ['#FF5722', '#FF9800', '#22c55e', '#3B82F6'] });
+    }
+    setTimeout(() => { onAuthSuccess(userData, token); }, isCheckout ? 2400 : 1800);
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/auth/google', {
+      const response = await fetch(`${API_BASE}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: credentialResponse.credential }),
@@ -63,7 +80,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: loginForm.email, password: loginForm.password }),
@@ -87,7 +104,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: registerForm.name, email: registerForm.email, password: registerForm.password }),
@@ -166,6 +183,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
               }}
             >
 
+              {/* ── SUCCESS SCREEN ─────────────────────────────────────────── */}
               {tab === 'success' ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -179,58 +197,81 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                     style={{
                       width: 88, height: 88,
                       borderRadius: 28,
-                      background: 'linear-gradient(135deg, #FF5722, #FF9800)',
+                      background: isCheckout
+                        ? 'linear-gradient(135deg, #FF5722, #FF9800)'
+                        : 'linear-gradient(135deg, #22c55e, #16a34a)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       margin: '0 auto 24px',
-                      boxShadow: '0 12px 40px rgba(255,87,34,0.35)',
+                      boxShadow: isCheckout
+                        ? '0 12px 40px rgba(255,87,34,0.35)'
+                        : '0 12px 40px rgba(34,197,94,0.35)',
                     }}
                   >
-                    <CheckCircle size={44} color="white" strokeWidth={2.5} />
+                    {isCheckout
+                      ? <CheckCircle size={44} color="white" strokeWidth={2.5} />
+                      : <UserCheck size={44} color="white" strokeWidth={2.5} />
+                    }
                   </motion.div>
-                  <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: 26, fontWeight: 900, color: '#1A1A2E', marginBottom: 10 }}>
-                    Order Confirmed! 🎉
-                  </h3>
-                  <p style={{ fontSize: 15, color: '#7B7B8D', lineHeight: 1.6, marginBottom: 20 }}>
-                    {(user || {}).name ? `Welcome, ${(user || {}).name.split(' ')[0]}! Your` : 'Your'} order of{' '}
-                    <strong style={{ color: '#FF5722' }}>{cartItems.reduce((s, i) => s + i.qty, 0)} items</strong>{' '}
-                    worth <strong style={{ color: '#1A1A2E' }}>RWF {orderTotal.toLocaleString()}</strong> has been placed successfully.
-                  </p>
-                  <div style={{
-                    background: '#FFF3EE', borderRadius: 16,
-                    padding: '16px 20px',
-                    border: '1px solid #FFCCBC',
-                    marginBottom: 8,
-                    textAlign: 'left',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                      <ShoppingBag size={22} color="#FF5722" style={{ flexShrink: 0, marginTop: 1 }} />
-                      <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A2E' }}>
-                          {orderType === 'Delivery' ? 'Our team will contact you shortly' : 'Your order is being prepared'}
-                        </div>
-                        <div style={{ fontSize: 12, color: '#7B7B8D', marginTop: 2 }}>
-                          {orderType === 'Delivery'
-                            ? 'Expected delivery: within 60 minutes in Kigali'
-                            : 'Expected pickup: ready in 30 minutes at our store'}
-                        </div>
-                      </div>
-                    </div>
-                    {selectedBranch && (
+
+                  {isCheckout ? (
+                    <>
+                      <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: 26, fontWeight: 900, color: '#1A1A2E', marginBottom: 10 }}>
+                        Order Confirmed! 🎉
+                      </h3>
+                      <p style={{ fontSize: 15, color: '#7B7B8D', lineHeight: 1.6, marginBottom: 20 }}>
+                        {(user || {}).name ? `Welcome, ${(user || {}).name.split(' ')[0]}! Your` : 'Your'} order of{' '}
+                        <strong style={{ color: '#FF5722' }}>{(cartItems || []).reduce((s, i) => s + i.qty, 0)} items</strong>{' '}
+                        worth <strong style={{ color: '#1A1A2E' }}>RWF {orderTotal.toLocaleString()}</strong> has been placed successfully.
+                      </p>
                       <div style={{
-                        display: 'flex', alignItems: 'center', gap: 6,
-                        marginTop: 12, paddingTop: 10,
-                        borderTop: '1px solid #FFCCBC',
-                        fontSize: 12, fontWeight: 700, color: '#FF5722',
+                        background: '#FFF3EE', borderRadius: 16,
+                        padding: '16px 20px',
+                        border: '1px solid #FFCCBC',
+                        marginBottom: 8,
+                        textAlign: 'left',
                       }}>
-                        <MapPin size={13} />
-                        {orderType === 'Pickup' ? 'Pickup from: ' : 'Branch: '}
-                        <span style={{ color: '#1A1A2E', fontWeight: 600 }}>{selectedBranch.name}</span>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                          <ShoppingBag size={22} color="#FF5722" style={{ flexShrink: 0, marginTop: 1 }} />
+                          <div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A2E' }}>
+                              {orderType === 'Delivery' ? 'Our team will contact you shortly' : 'Your order is being prepared'}
+                            </div>
+                            <div style={{ fontSize: 12, color: '#7B7B8D', marginTop: 2 }}>
+                              {orderType === 'Delivery'
+                                ? 'Expected delivery: within 60 minutes in Kigali'
+                                : 'Expected pickup: ready in 30 minutes at our store'}
+                            </div>
+                          </div>
+                        </div>
+                        {selectedBranch && (
+                          <div style={{
+                            display: 'flex', alignItems: 'center', gap: 6,
+                            marginTop: 12, paddingTop: 10,
+                            borderTop: '1px solid #FFCCBC',
+                            fontSize: 12, fontWeight: 700, color: '#FF5722',
+                          }}>
+                            <MapPin size={13} />
+                            {orderType === 'Pickup' ? 'Pickup from: ' : 'Branch: '}
+                            <span style={{ color: '#1A1A2E', fontWeight: 600 }}>{selectedBranch.name}</span>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </>
+                  ) : (
+                    <>
+                      <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: 26, fontWeight: 900, color: '#1A1A2E', marginBottom: 10 }}>
+                        {t('auth.standalone_success')} ✓
+                      </h3>
+                      <p style={{ fontSize: 15, color: '#7B7B8D', lineHeight: 1.6 }}>
+                        {t('auth.standalone_success_desc', { name: (user || {}).name?.split(' ')[0] || '' })}
+                      </p>
+                    </>
+                  )}
                 </motion.div>
+
               ) : (
                 <>
+                  {/* ── HEADER ─────────────────────────────────────────────── */}
                   <div style={{
                     background: 'linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%)',
                     padding: '28px 32px 24px',
@@ -255,40 +296,51 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                         background: 'rgba(255,87,34,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
-                        <ShoppingBag size={22} color="#FF5722" />
+                        {isCheckout ? <ShoppingBag size={22} color="#FF5722" /> : <User size={22} color="#FF5722" />}
                       </div>
                       <div>
                         <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                          {t('auth.secure')}
+                          {isCheckout ? t('auth.secure') : 'Simba Supermarket'}
                         </div>
                         <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: 18, fontWeight: 800, color: 'white' }}>
-                          {t('auth.title')}
+                          {isCheckout ? t('auth.title') : t('auth.standalone_title')}
                         </div>
                       </div>
                     </div>
 
-                    <div style={{
-                      background: 'rgba(255,255,255,0.06)',
-                      borderRadius: 12, padding: '10px 14px',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>
-                          {cartItems.reduce((s, i) => s + i.qty, 0)} items · {orderType}
-                        </span>
-                        <span style={{ fontSize: 14, fontWeight: 800, color: '#FF9800', fontFamily: 'Outfit, sans-serif' }}>
-                          RWF {orderTotal.toLocaleString()}
-                        </span>
-                      </div>
-                      {selectedBranch && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
-                          <MapPin size={11} />
-                          {selectedBranch.name}
+                    {/* Only show cart summary in checkout mode */}
+                    {isCheckout && (cartItems || []).length > 0 && (
+                      <div style={{
+                        background: 'rgba(255,255,255,0.06)',
+                        borderRadius: 12, padding: '10px 14px',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>
+                            {(cartItems || []).reduce((s, i) => s + i.qty, 0)} items · {orderType}
+                          </span>
+                          <span style={{ fontSize: 14, fontWeight: 800, color: '#FF9800', fontFamily: 'Outfit, sans-serif' }}>
+                            RWF {orderTotal.toLocaleString()}
+                          </span>
                         </div>
-                      )}
-                    </div>
+                        {selectedBranch && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+                            <MapPin size={11} />
+                            {selectedBranch.name}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Account mode subtitle */}
+                    {!isCheckout && (
+                      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                        {t('auth.standalone_subtitle')}
+                      </p>
+                    )}
                   </div>
 
+                  {/* ── TABS ───────────────────────────────────────────────── */}
                   <div style={{ display: 'flex', borderBottom: '1px solid #F0F0F5' }}>
                     {['login', 'register'].map(t_key => (
                       <button
@@ -308,6 +360,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                     ))}
                   </div>
 
+                  {/* ── FORM BODY ──────────────────────────────────────────── */}
                   <div style={{ padding: '28px 32px 32px' }}>
                     {error && (
                       <div style={{
@@ -320,6 +373,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                       </div>
                     )}
 
+                    {/* Google Sign-In */}
                     <div style={{ marginBottom: 24, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <div style={{ width: '100%', marginBottom: 20 }}>
                         <GoogleLogin
@@ -354,6 +408,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><Mail size={16} /></span>
                             <input
+                              id="login-email"
                               type="email"
                               placeholder={t('auth.email')}
                               style={inputStyle}
@@ -367,6 +422,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><Lock size={16} /></span>
                             <input
+                              id="login-password"
                               type={showPass ? 'text' : 'password'}
                               placeholder={t('auth.password')}
                               style={{ ...inputStyle, paddingRight: 46 }}
@@ -388,6 +444,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           </div>
 
                           <button
+                            id="btn-login-submit"
                             type="submit"
                             disabled={loading}
                             style={{
@@ -405,15 +462,17 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                                 style={{ width: 20, height: 20, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white' }}
                               />
                             ) : (
-                              <> {t('auth.login')} & Place Order <ArrowRight size={18} /> </>
+                              <>
+                                {isCheckout ? <>{t('auth.login')} & Place Order <ArrowRight size={18} /></> : <>{t('auth.login')} <ArrowRight size={18} /></>}
+                              </>
                             )}
                           </button>
 
                           <p style={{ textAlign: 'center', fontSize: 13, color: '#7B7B8D' }}>
-                            Don&apos;t have an account?{' '}
+                            {t('auth.no_account')}{' '}
                             <button type="button" onClick={() => { setTab('register'); setError(''); }}
                               style={{ color: '#FF5722', fontWeight: 700 }}>
-                              {t('auth.create')} free
+                              {t('auth.create')}
                             </button>
                           </p>
                         </motion.form>
@@ -430,8 +489,9 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><User size={16} /></span>
                             <input
+                              id="register-name"
                               type="text"
-                              placeholder="Full name"
+                              placeholder={t('auth.full_name')}
                               style={inputStyle}
                               value={registerForm.name}
                               onChange={e => setRegisterForm(p => ({ ...p, name: e.target.value }))}
@@ -443,6 +503,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><Mail size={16} /></span>
                             <input
+                              id="register-email"
                               type="email"
                               placeholder={t('auth.email')}
                               style={inputStyle}
@@ -456,6 +517,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><Lock size={16} /></span>
                             <input
+                              id="register-password"
                               type={showPass ? 'text' : 'password'}
                               placeholder={t('auth.password')}
                               style={{ ...inputStyle, paddingRight: 46 }}
@@ -473,8 +535,9 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           <div style={{ position: 'relative' }}>
                             <span style={iconWrapStyle}><Lock size={16} /></span>
                             <input
+                              id="register-confirm-password"
                               type={showConfirmPass ? 'text' : 'password'}
-                              placeholder="Confirm password"
+                              placeholder={t('auth.confirm_password')}
                               style={{ ...inputStyle, paddingRight: 46 }}
                               value={registerForm.confirmPassword}
                               onChange={e => setRegisterForm(p => ({ ...p, confirmPassword: e.target.value }))}
@@ -488,6 +551,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                           </div>
 
                           <button
+                            id="btn-register-submit"
                             type="submit"
                             disabled={loading}
                             style={{
@@ -506,18 +570,21 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, cartItems, skipToSuccess = 
                                 style={{ width: 20, height: 20, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white' }}
                               />
                             ) : (
-                              <> {t('auth.create')} & Order <ArrowRight size={18} /> </>
+                              <>
+                                {isCheckout ? <>{t('auth.create')} & Order <ArrowRight size={18} /></> : <>{t('auth.create')} <ArrowRight size={18} /></>}
+                              </>
                             )}
                           </button>
 
                           <p style={{ textAlign: 'center', fontSize: 12, color: '#aaa', lineHeight: 1.5 }}>
-                            By creating an account you agree to our{' '}
-                            <span style={{ color: '#FF5722', fontWeight: 600 }}>Terms of Service</span> and{' '}
-                            <span style={{ color: '#FF5722', fontWeight: 600 }}>Privacy Policy</span>.
+                            {t('auth.terms_agree')}{' '}
+                            <span style={{ color: '#FF5722', fontWeight: 600 }}>{t('auth.terms')}</span>{' '}
+                            {t('auth.and')}{' '}
+                            <span style={{ color: '#FF5722', fontWeight: 600 }}>{t('auth.privacy')}</span>.
                           </p>
 
                           <p style={{ textAlign: 'center', fontSize: 13, color: '#7B7B8D' }}>
-                            Already have an account?{' '}
+                            {t('auth.have_account')}{' '}
                             <button type="button" onClick={() => { setTab('login'); setError(''); }}
                               style={{ color: '#FF5722', fontWeight: 700 }}>
                               {t('auth.login')}

@@ -45,7 +45,7 @@ const CartDrawer = ({
             <div className="drawer-header">
               <div className="drawer-title">
                 <ShoppingCart size={20} color="#FF5722" />
-                My Cart
+                {t('cart.title')}
                 {cartItems.length > 0 && (
                   <span className="drawer-title-count">{totalItems}</span>
                 )}
@@ -78,7 +78,7 @@ const CartDrawer = ({
                 </div>
                 <div>
                   <div style={{ fontWeight: 700, color: '#166534' }}>
-                    Signed in as {user.name}
+                    {t('cart.signed_in_as', { name: user.name })}
                   </div>
                   <div style={{ fontSize: 11, color: '#4ade80' }}>{user.email}</div>
                 </div>
@@ -92,10 +92,10 @@ const CartDrawer = ({
                   <div className="drawer-empty-icon">
                     <ShoppingBag size={36} />
                   </div>
-                  <h4>Your cart is empty</h4>
-                  <p>Add items from our catalogue to get started with your order.</p>
+                  <h4>{t('cart.empty')}</h4>
+                  <p>{t('cart.empty_desc')}</p>
                   <button className="drawer-empty-btn" onClick={onClose}>
-                    Browse Products
+                    {t('cart.browse')}
                   </button>
                 </div>
               ) : (
@@ -178,7 +178,7 @@ const CartDrawer = ({
                     marginBottom: 8,
                   }}>
                     {orderType === 'Pickup' ? <Store size={13} /> : <MapPin size={13} />}
-                    {orderType === 'Pickup' ? 'Pickup branch' : 'Nearest branch'}
+                    {orderType === 'Pickup' ? t('cart.pickup_branch') : t('cart.nearest_branch')}
                   </div>
                   <div style={{ position: 'relative' }}>
                     <MapPin
@@ -235,7 +235,7 @@ const CartDrawer = ({
                     }}
                   >
                     <Map size={13} />
-                    {showMap ? 'Hide map' : 'View on map'}
+                    {showMap ? t('cart.hide_map') : t('cart.view_map')}
                     {showMap ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                   </button>
                 </div>
@@ -270,24 +270,24 @@ const CartDrawer = ({
                 {/* Summary */}
                 <div className="cart-summary">
                   <div className="cart-summary-row">
-                    <span>Subtotal ({totalItems} item{totalItems !== 1 ? 's' : ''})</span>
+                    <span>{t('cart.subtotal')} ({totalItems} {totalItems !== 1 ? 'items' : 'item'})</span>
                     <span>RWF {subtotal.toLocaleString()}</span>
                   </div>
                   <div className="cart-summary-row">
-                    <span>Delivery (Kigali)</span>
+                    <span>{deliveryFee > 0 ? t('cart.delivery') : t('cart.delivery_free')}</span>
                     <span>RWF {deliveryFee.toLocaleString()}</span>
                   </div>
                   <div className="cart-summary-row total">
-                    <span>Total</span>
+                    <span>{t('cart.total')}</span>
                     <span>RWF {total.toLocaleString()}</span>
                   </div>
                 </div>
 
                 {/* Checkout button — shows login prompt if not logged in */}
                 {user ? (
-                  <button className="btn-checkout" onClick={onCheckout}>
+                  <button className="btn-checkout" id="btn-place-order" onClick={onCheckout}>
                     <ShoppingCart size={18} />
-                    Place Order
+                    {t('cart.place_order')}
                     <ArrowRight size={16} />
                   </button>
                 ) : (
@@ -306,20 +306,20 @@ const CartDrawer = ({
                     }}>
                       <LogIn size={18} color="#FF5722" style={{ flexShrink: 0 }} />
                       <span>
-                        <strong style={{ color: '#1A1A2E' }}>Sign in</strong> to place your order and save your information.
+                        <strong style={{ color: '#1A1A2E' }}>{t('cart.signin_prompt_1')}</strong>{t('cart.signin_prompt_2')}
                       </span>
                     </div>
-                    <button className="btn-checkout" onClick={onCheckout}>
+                    <button className="btn-checkout" id="btn-signin-place-order" onClick={onCheckout}>
                       <LogIn size={18} />
-                      Sign In & Place Order
+                      {t('cart.signin_place_order')}
                       <ArrowRight size={16} />
                     </button>
                   </div>
                 )}
 
-                <button className="btn-clear-cart" onClick={onClear}>
+                <button className="btn-clear-cart" id="btn-clear-cart" onClick={onClear}>
                   <Trash2 size={13} style={{ marginRight: 6, verticalAlign: 'middle' }} />
-                  Clear Cart
+                  {t('cart.clear')}
                 </button>
               </div>
             )}

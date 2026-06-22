@@ -5,7 +5,11 @@
     "hi": "Muraho, {{name}}",
     "departments": "Ibyiciro byose",
     "wishlist": "Ibyo nifuza",
-    "cart": "Ikarita"
+    "cart": "Ikarita",
+    "my_account": "Konti Yanjye",
+    "sign_out": "Sohoka",
+    "dark_mode": "Imiterere y'Ijoro",
+    "language": "Ururimi"
   },
   "hero": {
     "badge": "Supermarket ya mbere mu Rwanda",
@@ -13,10 +17,18 @@
     "title_part2": "Busumba",
     "title_accent": "Ibyo uzi",
     "desc": "Kuva mu mutima wa Kigali kugeza ku meza yawe. Ibicuruzwa byiza cyane biva hirya no hino ku isi n'ibyakorewe mu Rwanda — bikugezweho mu rugo.",
-    "cta": "Tangira guhaha"
+    "cta": "Tangira guhaha",
+    "stat_products": "Ibicuruzwa",
+    "stat_branches": "Amashami",
+    "stat_years": "Imyaka ikorera u Rwanda",
+    "stat_customers": "Abakiriya Bashimye"
   },
   "auth": {
     "title": "Injira kugira ngo utumize",
+    "standalone_title": "Murakaza neza kuri Simba",
+    "standalone_subtitle": "Injira kugira ngo ukurikire amatumizo yawe.",
+    "standalone_success": "Winjiye neza!",
+    "standalone_success_desc": "Murakaza neza, {{name}}. Ubu urashobora gukurikira amatumizo yawe.",
     "secure": "Kwishura neza",
     "google": "Injira ukoresheje Google",
     "or": "CYANGWA",
@@ -24,7 +36,15 @@
     "password": "Ijambo ry'ibanga",
     "forgot": "Wibagiwe ijambo ry'ibanga?",
     "create": "Fungura konti",
-    "login": "Injira"
+    "login": "Injira",
+    "full_name": "Amazina yose",
+    "confirm_password": "Emeza ijambo ry'ibanga",
+    "no_account": "Nta konti ufite?",
+    "have_account": "Ufite konti?",
+    "terms_agree": "Mu gufungura konti, wemeye",
+    "terms": "Amabwiriza y'imikoreshereze",
+    "and": "na",
+    "privacy": "Amabwiriza y'ibanga"
   },
   "categories": {
     "label": "Gura ukurikije icyiciro",
@@ -49,7 +69,13 @@
     "premium": "Byiza cyane",
     "best_seller": "Bikunzwe cyane",
     "new": "Gishya",
-    "in_stock": "Birahari"
+    "in_stock": "Birahari",
+    "add_to_cart": "Ongeraho mu ikarita",
+    "add_to_wishlist": "Ongeraho ku wishlist",
+    "remove_wishlist": "Kuraho ku wishlist",
+    "view_details": "Reba Ibisobanuro",
+    "related": "Ushobora gukunda nanone",
+    "back": "Subira ku bicuruzwa"
   },
   "cart": {
     "title": "Ikarita Yanjye",
@@ -61,12 +87,22 @@
     "items_count": "(Igicuruzwa {{count}})",
     "items_count_plural": "(Ibicuruzwa {{count}})",
     "delivery": "Gutwara (Kigali)",
+    "delivery_free": "Gutwara Ubuntu",
     "total": "Igiteranyo Cose",
     "checkout": "Emeza Komande",
     "signin_checkout": "Injira Kandi Wemeze",
     "clear": "Siba Ikarita",
     "signin_prompt_1": "Injira",
-    "signin_prompt_2": " kugira ngo utumize kandi ubike amakuru yawe."
+    "signin_prompt_2": " kugira ngo utumize kandi ubike amakuru yawe.",
+    "pickup_branch": "Ishami ryo gutwakurira",
+    "nearest_branch": "Ishami riri hafi",
+    "hide_map": "Hisha ikarita",
+    "view_map": "Reba ku ikarita",
+    "delivery_option": "Gutwara",
+    "pickup_option": "Gutwakura",
+    "remove_item": "Kuraho",
+    "place_order": "Emeza Komande",
+    "signin_place_order": "Injira no Gutumiza"
   },
   "wishlist": {
     "title": "Ibyo Nifuza",
@@ -75,6 +111,22 @@
     "explore": "Reba Ibicuruzwa",
     "add_cart": "Ohyera mu ikarita",
     "add_all": "Ohyera byose mu ikarita"
+  },
+  "customer": {
+    "title": "Amatumizo Yanjye",
+    "subtitle": "Kurikirana amatumizo yawe uya vuba n'imiterere yayo.",
+    "back": "Subira ku Duka",
+    "no_orders": "Nta matumizo nawe",
+    "no_orders_desc": "Ntakatumize nawe. Tangira kugura!",
+    "order_id": "Itumizo #{{id}}",
+    "items_label": "Ibicuruzwa:",
+    "status_pending": "Biritegereje",
+    "status_confirmed": "Byemejwe",
+    "status_delivered": "Byaherekezwe",
+    "status_completed": "Byarangiye",
+    "profile_title": "Umwirondoro Wanjye",
+    "profile_member": "Umunyamuryango",
+    "account_type": "Ubwoko bwa konti"
   },
   "footer": {
     "stay_updated": "Guma Umenyeshwa",
@@ -110,5 +162,14 @@
   },
   "app": {
     "back_to_top": "Subira hejuru"
+  },
+  "mobile": {
+    "categories": "Ibyiciro",
+    "search_placeholder": "Shaka ibicuruzwa...",
+    "sign_in": "Injira / Iyandikishe",
+    "my_account": "Konti Yanjye",
+    "sign_out": "Sohoka",
+    "dark_mode": "Imiterere y'Ijoro",
+    "language": "Ururimi"
   }
 }

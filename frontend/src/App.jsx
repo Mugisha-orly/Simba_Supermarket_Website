@@ -31,6 +31,8 @@ function App() {
   const [token, setToken] = useState(() => localStorage.getItem('simba_token') || null);
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  // 'checkout' = user is placing an order; 'account' = standalone sign-in from navbar
+  const [authModalMode, setAuthModalMode] = useState('checkout');
   const [orderType, setOrderType] = useState('Delivery');
   const [selectedBranch, setSelectedBranch] = useState(DEFAULT_BRANCH);
 
@@ -132,8 +134,16 @@ function App() {
   // ── Checkout gate ─────────────────────────────────────────────────────────
   const [checkoutAsGuest, setCheckoutAsGuest] = useState(false);
 
+  // Open auth modal in standalone (account) mode from the navbar Sign In button
+  const handleNavAuthOpen = () => {
+    setAuthModalMode('account');
+    setCheckoutAsGuest(false);
+    setAuthModalOpen(true);
+  };
+
   const handleCheckout = () => {
     setCartOpen(false);
+    setAuthModalMode('checkout');
     setCheckoutAsGuest(!!user);
     setAuthModalOpen(true);
   };
@@ -153,8 +163,8 @@ function App() {
     setAuthModalOpen(false);
     setCheckoutAsGuest(false);
 
-    // Post order to backend
-    if (cartItems.length > 0 && effectiveToken) {
+    // Only place order in checkout mode
+    if (authModalMode === 'checkout' && cartItems.length > 0 && effectiveToken) {
       try {
         const response = await fetch(`${API_BASE}/api/orders`, {
           method: 'POST',
@@ -171,9 +181,13 @@ function App() {
       } catch (err) {
         console.error('Failed to create order:', err);
       }
+      setCartItems([]);
     }
 
-    setCartItems([]);
+    // In account mode, redirect to customer dashboard after sign-in
+    if (authModalMode === 'account') {
+      setCurrentView('customer');
+    }
   };
 
   const updateOrderStatus = async (orderId, newStatus) => {
@@ -195,6 +209,7 @@ function App() {
   const handleAuthModalClose = () => {
     setAuthModalOpen(false);
     setCheckoutAsGuest(false);
+    setAuthModalMode('checkout');
   };
 
   const handleLogout = () => {
@@ -288,6 +303,7 @@ function App() {
         onCartOpen={() => setCartOpen(true)}
         onWishlistOpen={() => setWishlistOpen(true)}
         onAISearchOpen={() => setAiSearchOpen(true)}
+        onAuthOpen={handleNavAuthOpen}
         user={user}
         currentView={currentView}
         setCurrentView={setCurrentView}
@@ -307,6 +323,7 @@ function App() {
       ) : currentView === 'customer' && user ? (
         <CustomerDashboard
           orders={orders.filter(o => o.customer?.email === user.email)}
+          user={user}
           onBackToStore={() => setCurrentView('store')}
         />
       ) : selectedProduct ? (
@@ -391,6 +408,7 @@ function App() {
         user={user}
         orderType={orderType}
         selectedBranch={selectedBranch}
+        mode={authModalMode}
       />
 
       <WishlistDrawer

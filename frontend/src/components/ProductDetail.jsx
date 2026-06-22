@@ -37,9 +37,9 @@ const ProductDetail = ({ product, products, onBack, onAddToCart, onToggleWishlis
   return (
     <div className="product-detail-page">
       <div className="container">
-        <button className="pd-back-btn" onClick={onBack}>
+        <button className="pd-back-btn" id="btn-back-to-products" onClick={onBack}>
           <ArrowLeft size={16} />
-          {t('products.back_to_store', 'Back to Store')}
+          {t('products.back')}
         </button>
 
         <div className="pd-layout">
@@ -100,10 +100,10 @@ const ProductDetail = ({ product, products, onBack, onAddToCart, onToggleWishlis
                 </div>
                 {product.inStock ? (
                   <div className="pd-stock in-stock">
-                    <span className="pd-stock-dot" /> In Stock
+                    <span className="pd-stock-dot" /> {t('products.in_stock')}
                   </div>
                 ) : (
-                  <div className="pd-stock out-stock">Out of Stock</div>
+                  <div className="pd-stock out-stock">{t('products.out_of_stock')}</div>
                 )}
               </div>
 
@@ -125,7 +125,7 @@ const ProductDetail = ({ product, products, onBack, onAddToCart, onToggleWishlis
                   whileTap={product.inStock ? { scale: 0.95 } : {}}
                   animate={addedAnim ? { scale: [1, 1.05, 1], backgroundColor: ['#FF5722', '#22c55e', '#FF5722'] } : {}}
                 >
-                  {addedAnim ? <span style={{ fontSize: 18, color: 'white' }}>✓ Added to Cart</span> : <><ShoppingCart size={18} /> Add to Cart</>}
+                  {addedAnim ? <span style={{ fontSize: 18, color: 'white' }}>✓ {t('products.add_to_cart')}</span> : <><ShoppingCart size={18} /> {t('products.add_to_cart')}</>}
                 </motion.button>
               </div>
 
@@ -159,7 +159,7 @@ const ProductDetail = ({ product, products, onBack, onAddToCart, onToggleWishlis
         {/* Related Items */}
         {relatedProducts.length > 0 && (
           <div className="pd-related">
-            <h2 className="pd-related-title">You Might Also Like</h2>
+            <h2 className="pd-related-title">{t('products.related')}</h2>
             <div className="products-grid">
               {relatedProducts.map(p => (
                 <ProductCard
