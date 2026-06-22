@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -63,7 +64,7 @@ function App() {
   // ── Fetch products from backend ────────────────────────────────────────────
   useEffect(() => {
     setProductsLoading(true);
-    fetch('/api/products')
+    fetch(`${API_BASE}/api/products`)
       .then(r => r.json())
       .then(data => {
         setProducts(data.products || []);
@@ -78,7 +79,7 @@ function App() {
   // ── Fetch orders from backend when user is logged in ──────────────────────
   useEffect(() => {
     if (!token) { setOrders([]); return; }
-    fetch('/api/orders', {
+    fetch(`${API_BASE}/api/orders`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(r => r.json())
@@ -155,7 +156,7 @@ function App() {
     // Post order to backend
     if (cartItems.length > 0 && effectiveToken) {
       try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch(`${API_BASE}/api/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -177,7 +178,7 @@ function App() {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      await fetch(`/api/orders/${orderId}/status`, {
+      await fetch(`${API_BASE}/api/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +209,7 @@ function App() {
   // ── Admin: toggle product stock ───────────────────────────────────────────
   const handleToggleStock = async (productId, currentStock) => {
     try {
-      const response = await fetch(`/api/products/${productId}`, {
+      const response = await fetch(`${API_BASE}/api/products/${productId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,8 @@
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export const getAIRecommendations = async (userQuery, language = 'en') => {
   try {
-    const response = await fetch('/api/ai/recommend', {
+    const response = await fetch(`${API_BASE}/api/ai/recommend`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: userQuery, language }),
